@@ -69,7 +69,7 @@ python run_app.py
 **API 服务：**
 
 ```bash
-uvicorn api:app --host 0.0.0.0 --port 8000
+python run_api.py
 # Swagger 文档 http://localhost:8000/docs
 ```
 
