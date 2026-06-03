@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# 环境
+.env
+.env.local
+
+# 数据
+data/chroma_db/
+data/documents/
+data/history.json
+
+# IDE
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# 打包
+*.spec
+_internal/
+*.exe
+
+# 测试
+tests/
+
+# 其他
+*.log
+.DS_Store
+Thumbs.db

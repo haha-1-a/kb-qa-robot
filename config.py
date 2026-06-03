@@ -36,3 +36,14 @@ class Config:
     # Default LLM settings
     DEFAULT_MODEL = "deepseek-chat"
     DEFAULT_TEMPERATURE = 0.7
+
+    # Vision model
+    VISION_MODEL = os.getenv("VISION_MODEL", "deepseek-chat")
+    VISION_MAX_TOKENS = int(os.getenv("VISION_MAX_TOKENS", "1024"))
+
+    # API service
+    API_HOST = os.getenv("API_HOST", "0.0.0.0")
+    API_PORT = int(os.getenv("API_PORT", "8000"))
+
+    # Streamlit service
+    STREAMLIT_PORT = int(os.getenv("STREAMLIT_PORT", "8501"))

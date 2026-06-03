@@ -40,4 +40,4 @@ def format_file_size(size_bytes: float) -> str:
 
 
 def get_supported_extensions() -> List[str]:
-    return [".pdf", ".docx", ".md", ".txt", ".xlsx"]
+    return [".pdf", ".docx", ".md", ".txt", ".xlsx", ".jpg", ".jpeg", ".png", ".mp4"]

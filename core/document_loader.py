@@ -7,6 +7,8 @@ import pandas as pd
 from langchain_community.document_loaders import PyPDFLoader, TextLoader
 from langchain_core.documents import Document
 
+from core.multimodal_processor import load_image_as_document, load_video_as_document
+
 
 def load_pdf(file_path: str) -> List[Document]:
     loader = PyPDFLoader(file_path)
@@ -56,12 +58,26 @@ def load_xlsx(file_path: str) -> List[Document]:
         return [Document(page_content=text, metadata={"source": os.path.basename(file_path)})]
 
 
+def load_image(file_path: str) -> List[Document]:
+    doc = load_image_as_document(file_path)
+    return [doc] if doc else []
+
+
+def load_video(file_path: str) -> List[Document]:
+    doc = load_video_as_document(file_path)
+    return [doc] if doc else []
+
+
 LOADERS = {
     ".pdf": load_pdf,
     ".docx": load_docx,
     ".md": load_md,
     ".txt": load_txt,
     ".xlsx": load_xlsx,
+    ".jpg": load_image,
+    ".jpeg": load_image,
+    ".png": load_image,
+    ".mp4": load_video,
 }
 
 

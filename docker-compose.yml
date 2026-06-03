@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  streamlit:
+    build: .
+    container_name: kb-qa-streamlit
+    ports:
+      - "${STREAMLIT_PORT:-8501}:8501"
+    environment:
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - EMBEDDING_API_TYPE=${EMBEDDING_API_TYPE:-local}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY:-}
+    volumes:
+      - ./data:/app/data
+    command: python run_app.py
+    restart: unless-stopped
+
+  api:
+    build: .
+    container_name: kb-qa-api
+    ports:
+      - "${API_PORT:-8000}:8000"
+    environment:
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - EMBEDDING_API_TYPE=${EMBEDDING_API_TYPE:-local}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY:-}
+    volumes:
+      - ./data:/app/data
+    command: uvicorn api:app --host 0.0.0.0 --port 8000
+    restart: unless-stopped

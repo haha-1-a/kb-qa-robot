@@ -23,7 +23,7 @@ class Retriever:
         distances = results.get("distances", [[]])[0]
 
         for i, text in enumerate(docs):
-            meta = metas[i] if i < len(metas) else {}
+            meta = metas[i] if i < len(metas) and metas[i] is not None else {}
             distance = distances[i] if i < len(distances) else 0
             # Chroma 返回的是距离，cosine 距离转相似度
             score = 1 - distance

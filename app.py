@@ -21,6 +21,11 @@ st.set_page_config(
     page_icon="📚",
     layout="wide",
     initial_sidebar_state="expanded",
+    menu_items={
+        "Get Help": None,
+        "Report a bug": None,
+        "About": "企业知识库问答机器人 v1.0 — 基于 RAG 架构的智能问答系统",
+    },
 )
 
 ensure_dirs()
@@ -43,7 +48,6 @@ if "pending_ask" not in st.session_state:
 
 
 # ── 懒加载客户端 ──────────────────────────────────────────
-@st.cache_resource
 def get_vector_store():
     return VectorStore()
 
@@ -156,6 +160,34 @@ with st.sidebar:
             hm.clear()
             st.rerun()
 
+    if st.button("🔄 清除缓存", use_container_width=True, help="如果检索异常请点此刷新"):
+        st.cache_resource.clear()
+        st.cache_data.clear()
+        st.rerun()
+
+    st.divider()
+
+    # ── 项目信息 ──
+    with st.expander("ℹ️ 关于项目", expanded=False):
+        st.markdown("""
+**企业知识库问答机器人 v1.0**
+
+基于 RAG（检索增强生成）架构的智能问答系统。
+
+**技术栈：**
+- 🧠 LLM: DeepSeek
+- 📊 向量库: ChromaDB
+- 🔍 Embedding: BGE / OpenAI / DashScope
+- 🖥️ 前端: Streamlit
+- ⚡ API: FastAPI
+- 🐳 部署: Docker
+
+**支持格式：**
+- 文档: PDF, DOCX, MD, TXT, XLSX
+- 图片: JPG, PNG（视觉理解）
+- 视频: MP4（语音识别）
+        """)
+
     st.caption(f"共 {len(records)} 条记录")
 
     for i, record in enumerate(records):
@@ -254,10 +286,10 @@ with tab2:
     with col1:
         uploaded_files = st.file_uploader(
             "📁 上传文件",
-            type=["pdf", "docx", "md", "txt", "xlsx"],
+            type=["pdf", "docx", "md", "txt", "xlsx", "jpg", "jpeg", "png", "mp4"],
             accept_multiple_files=True,
             key="file_uploader",
-            help="选择一个或多个文档文件上传",
+            help="支持文档/图片/视频。图片通过视觉模型理解，视频通过语音识别转录。",
         )
 
     with col2:
