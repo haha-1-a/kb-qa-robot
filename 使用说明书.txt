@@ -1,0 +1,124 @@
+============================================================
+       企业知识库问答机器人 — 使用说明书
+              v2.0 | 2026年6月
+============================================================
+
+【 项目简介 】
+  基于 RAG（检索增强生成）架构的企业知识库智能问答系统。
+  支持上传 PDF/Word/Excel/图片/视频，通过自然语言提问，
+  AI 自动检索知识库并生成精准回答，附带引用来源。
+
+【 环境要求 】
+  - Windows 10/11 或 Linux（macOS 也可运行）
+  - Python 3.10 或更高版本
+  - 网络连接（调用 DeepSeek API）
+  - 磁盘空间：约 3GB（含依赖和模型下载）
+
+【 快速上手 — 仅需 3 步 】
+
+  ─── 第 1 步：配置 API Key ──────────────────────────
+  1. 打开解压后的文件夹
+  2. 找到 .env.example 文件，复制一份改名为 .env
+  3. 用记事本打开 .env，修改以下内容：
+
+     DEEPSEEK_API_KEY=你的DeepSeek密钥
+
+     （如何获取：访问 https://platform.deepseek.com 注册并创建 API Key）
+
+  ─── 第 2 步：安装依赖 ──────────────────────────────
+  打开命令行（在文件夹地址栏输入 cmd 回车），执行：
+
+     pip install -r requirements.txt
+
+  如果网络慢，可以换国内镜像：
+     pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+  ─── 第 3 步：启动系统 ──────────────────────────────
+  启动 Web 界面（推荐，日常使用）：
+
+     python run_app.py
+
+  浏览器会自动打开，或手动访问 http://localhost:8501
+
+  如果需要 API 服务（供程序调用）：
+
+     python run_api.py
+
+  API 文档自动生成：http://localhost:8000/docs
+
+【 使用指南 】
+
+  ◆ 上传知识库
+  1. 打开 http://localhost:8501
+  2. 点击顶部的「📁 知识库管理」标签
+  3. 拖拽文件或点击上传按钮
+     支持格式：PDF / Word / Markdown / TXT / Excel / 图片 / 视频
+  4. 也可以输入本地文件夹路径批量导入
+  5. 等待进度条完成即可
+
+  ◆ 开始问答
+  1. 切换到「💬 问答」标签
+  2. 在底部输入框输入问题，例如：
+     - "IT设备怎么申请？"
+     - "考勤制度是什么？"
+     - "报销流程有哪些步骤？"
+  3. 按回车提交，等待 AI 生成回答
+  4. 点击「📎 引用来源」查看答案依据
+
+  ◆ 侧边栏设置
+  - Embedding API：切换向量化方案（默认本地免费）
+  - Top-K：控制每次检索返回的片段数量（1-10）
+  - 温度参数：控制回答的创造性（0=保守，1=创意）
+  - LLM 模型：选择 deepseek-chat 或 deepseek-coder
+  - 历史记录：支持导出 CSV 和清空
+
+【 常见问题 】
+
+  Q1：启动后显示"请先配置 API Key"
+  A1：检查 .env 文件是否存在，里面的 DEEPSEEK_API_KEY 是否填写
+
+  Q2：首次启动很慢
+  A2：首次会从 HuggingFace 下载 BGE 向量模型（约 400MB），请耐心等待
+
+  Q3：上传图片/视频怎么处理？
+  A3：图片通过 DeepSeek 视觉模型理解内容；
+       视频自动提取音频并用 Whisper 转为文字；
+       两者最终都变成文本存入知识库
+
+  Q4：可以用自己的 OpenAI/阿里云 API 吗？
+  A4：可以。编辑 .env 中的 EMBEDDING_API_TYPE，
+       选择 openai 或 dashscope 并填入对应 API Key
+
+  Q5：如何清空知识库？
+  A5：在知识库管理页点击「🗑️ 清空知识库」按钮
+
+【 Docker 部署（可选） 】
+  如果已安装 Docker，可以一键启动：
+
+    docker compose up -d
+
+  这会同时启动 Web 界面（8501）和 API 服务（8000）
+
+【 文件结构 】
+  项目文件夹/
+  ├── app.py              # Streamlit 主程序
+  ├── api.py              # FastAPI 服务
+  ├── config.py           # 配置文件
+  ├── run_app.py          # 一键启动 Web
+  ├── run_api.py          # 一键启动 API
+  ├── core/               # 核心代码
+  │   ├── document_loader.py    # 文档加载
+  │   ├── embedding_client.py   # 向量嵌入
+  │   ├── llm_client.py         # LLM 调用
+  │   ├── multimodal_processor.py # 多模态处理
+  │   ├── retriever.py          # 语义检索
+  │   ├── text_splitter.py      # 文本分割
+  │   └── vector_store.py       # 向量库操作
+  ├── utils/              # 工具函数
+  ├── tests/              # 测试脚本
+  ├── Dockerfile / docker-compose.yml  # Docker 部署
+  └── assets/             # 截图素材
+
+============================================================
+  如有问题，请查看项目 GitHub 或联系团队成员
+============================================================
